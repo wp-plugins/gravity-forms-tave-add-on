@@ -778,21 +778,21 @@ class GFTave {
     private static function get_lead_fields(){
         //the "required" key exists only for fields that are required by the Tave API
 		return array(
-			array("name" => "JobType", "label" => "Shoot Type", "required" => "true"), 
-			array("name" => "FirstName", "label" => "First Name", "required" => "true"), 
-			array("name" => "LastName", "label" =>"Last Name", "required" => "true"),
+			array("name" => "JobType", "label" => "JobType", "required" => "true"), 
+			array("name" => "FirstName", "label" => "FirstName", "required" => "true"), 
+			array("name" => "LastName", "label" =>"LastName", "required" => "true"),
 			array("name" => "Email", "label" =>"Email", "required" => "true"), 
-			array("name" => "EventDate", "label" => "Event Date"),
-			array("name" => "Source", "label" => "Referrer"),
+			array("name" => "Brand", "label" =>"Brand"), 
+			array("name" => "EventDate", "label" => "EventDate"),
+			array("name" => "Source", "label" => "Source"),
 			array("name" => "Message", "label" => "Message"),
-			array("name" => "HomePhone", "label" =>"Home Phone"), 
-			array("name" => "WorkPhone", "label" =>"Work Phone"), 
-			array("name" => "MobilePhone", "label" =>"Cell Phone"), 
-			array("name" => "GuestCount", "label" =>"Guests Count"),
-			array("name" => "EventLocation", "label" =>"Event Location"), 
-			array("name" => "Brand", "label" =>"Studio Brand"), 
-			array("name" => "CeremonyLocation", "label" =>"Ceremony Location"), 
-			array("name" => "ReceptionLocation", "label" =>"Reception Location")
+			array("name" => "HomePhone", "label" =>"HomePhone"), 
+			array("name" => "WorkPhone", "label" =>"WorkPhone"), 
+			array("name" => "MobilePhone", "label" =>"CellPhone"), 
+			array("name" => "GuestCount", "label" =>"GuestsCount"),
+			array("name" => "EventLocation", "label" =>"EventLocation"), 
+			array("name" => "CeremonyLocation", "label" =>"CeremonyLocation"), 
+			array("name" => "ReceptionLocation", "label" =>"ReceptionLocation")
 		);
     }
 	
