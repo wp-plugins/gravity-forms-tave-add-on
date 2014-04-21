@@ -13,7 +13,7 @@ Connects your WordPress web site to your Táve account for collecting leads usin
 == Description ==
 Simple add on for Gravity Forms that will take the form input and put it into Táve.
 
-You will need your Táve Studio ID and Secret Key for the settings, and you will need to have already installed [Gravit Forms](http://www.gravityforms.com) for this add-on to work.
+You will need your Táve Studio ID and Secret Key for the settings, and you will need to have already installed [Gravity Forms](http://www.gravityforms.com) for this add-on to work.
 
 Make a form through Gravity Forms that contains the required fields you want, but they must include a field for "FirstName", "LastName", "Email", "JobType". Those four fields are the required fields for your form to work with Táve.
 
