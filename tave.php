@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms T&aacute;ve Add-On
 Plugin URI: http://www.rowellphoto.com/gravity-forms-tave/
 Description: Connects your WordPress web site to your T&aacute;ve account for collecting leads using the power of Gravity Forms.
-Version: 2014.04.18
+Version: 2014.11.10
 Author: Ryan Rowell
 Author URI: http://www.rowellphoto.com/
 
@@ -188,7 +188,7 @@ class GFTave {
             <?php wp_nonce_field("update", "gf_tave_update") ?>
             <h3><?php _e("T&aacute;ve Settings", "gravityformstave") ?></h3>
 			
-			<p style="text-align: left;"><?php _e("Here is where you will connect your T&aacute;ve account to the plugin. To find your Secret Key and Studio ID, visit the New Lead API page from the bottom of your Settings tab on T&aacute;ve (You can", "gravityformstave") ?> <a href="https://my.tave.com/Settings/NewLeadAPI" title="Go to the New Lead API page on T&aacute;ve" target="_blank"><?php _e("head straight there", "gravityformstave") ?></a> <?php _e("if you are already logged in.) Copy the Secret Key and Studio ID into their respective fields below.", "gravityformstave") ?></p>
+			<p style="text-align: left;"><?php _e("Here is where you will connect your T&aacute;ve account to the plugin. To find your Secret Key and Studio ID, visit the New Lead API page from the bottom of your Settings tab on T&aacute;ve (You can", "gravityformstave") ?> <a href="https://tave.com/app/settings/new-lead-api" title="Go to the New Lead API page on T&aacute;ve" target="_blank"><?php _e("head straight there", "gravityformstave") ?></a> <?php _e("if you are already logged in.) Copy the Secret Key and Studio ID into their respective fields below.", "gravityformstave") ?></p>
 
             <table class="form-table">
                 <tr>
@@ -624,7 +624,7 @@ class GFTave {
     	
 		$settings = get_option("gf_tave_settings");
 		$admin_email = get_option("admin_email");
-		$url = "https://my.tave.com/WebService/CreateLead/{$settings["brand"]}";
+		$url = "https://tave.com/app/webservice/create-lead/{$settings["brand"]}"; // https://tave.com/app/webservice/create-lead/whateverthestudioIDis
 		$map = $feed[0]["meta"]["lead_fields"];
 		$convertFunction = function_exists('mb_convert_encoding');
 
@@ -673,6 +673,7 @@ class GFTave {
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, TRUE);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $lead);
 
 		/* get the response from the Tave API */
