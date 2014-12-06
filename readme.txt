@@ -1,9 +1,9 @@
 === Gravity Forms Táve add-on ===
 Contributors: rowellr
 Tags: Gravity Forms, Táve
-Requires at least: 3.1
-Tested up to: 3.9
-Stable tag: 2014.11.10
+Requires at least: 4
+Tested up to: 4
+Stable tag: 2014.12.04
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +28,7 @@ A special thank you to pussycatdev for providing the inspiration of this plugin,
 1. Upload the extracted archive to `wp-content/plugins/`
 2. Activate the plugin through the 'Plugins' menu
 3. Open the plugin settings page Forms -> Settings -> Táve or the settings link on the Plugins page.
-4. Add your Tave Secret Key and Studio ID.
+4. Add your Tave Secret Key and Studio ID, If you want extra custom fields add them there too.
 5. Add a "feed" to map the Tave fields to a pre-existing form from the Forms -> Táve menu link.
 4. Start generating leads!
 
@@ -53,6 +53,10 @@ Visit my [Usage & Installation Instructions](http://www.rowellphoto.com/gravity-
 4. Mapping your fields from the form to Táve.
 
 == Changelog ==
+
+= 2014.12.04 =
+* FEATURE: Added the ability to create extra form fields for mapping. You just have to add them to the settings screen and they will be available on the form map to send to Táve. The names of these fields will become the names of the custom fields in Táve if they don't already exist.
+* updated some spelling, and some explanations.
 
 = 2014.11.10 =
 * DO NO UPDATE UNTIL TAVE 4 IS LIVE AND YOU ARE RUNNING IT.

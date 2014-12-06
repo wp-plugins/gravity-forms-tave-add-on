@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms T&aacute;ve Add-On
 Plugin URI: http://www.rowellphoto.com/gravity-forms-tave/
 Description: Connects your WordPress web site to your T&aacute;ve account for collecting leads using the power of Gravity Forms.
-Version: 2014.11.10
+Version: 2014.12.04
 Author: Ryan Rowell
 Author URI: http://www.rowellphoto.com/
 
@@ -137,7 +137,7 @@ class GFTave {
         // Adding submenu if user has access
         $permission = self::has_access("gravityforms_tave");
         if(!empty($permission))
-            $menus[] = array("name" => "gf_tave", "label" => __("T&aacute;ve", "gravityformstave"), "callback" =>  array("GFTave", "tave_page"), "permission" => $permission);
+            $menus[] = array("name" => "gf_tave", "label" => __("T&aacute;ve Form Maps", "gravityformstave"), "callback" =>  array("GFTave", "tave_page"), "permission" => $permission);
 
         return $menus;
     }
@@ -160,7 +160,8 @@ class GFTave {
             $settings = array(
 				"apikey" => trim(rgpost("gf_tave_apikey")), 
 				"brand" => trim(rgpost("gf_tave_brand")),
-				"no_email" => trim(rgpost("gf_tave_no_email"))
+				"no_email" => trim(rgpost("gf_tave_no_email")),
+				"extra_fields" => trim(rgpost("gf_tave_extra_fields"))
 			);
 			
 			//validate the API key to make sure it's the right format
@@ -210,6 +211,13 @@ class GFTave {
                     <td>
                         <input type="checkbox" id="gf_tave_no_email" name="gf_tave_no_email" value="checked" <?php checked( 'checked', $settings["no_email"]); ?> />
                         Check this box to stop receiving the T&aacute;ve email.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="gf_tave_extra_fields"><?php _e("Extra Field Names You Want to Send to T&aacute;ve", "gravityformstave"); ?></label></th>
+                    <td>
+                        <input type="text" id="gf_tave_extra_fields" name="gf_tave_extra_fields" size="50" placeholder="BestTimeToCall, YourPetsName, etc." value="<?php echo esc_attr($settings["extra_fields"]) ?>" /><br/>
+                        Use this to add more fields to the field mapper to send to T&aacute;ve. This list is comma separated, eg: BestTimeToCall, YourPetsName, AnyFieldNameYouWant.
                     </td>
                 </tr>
                 <tr>
@@ -627,6 +635,7 @@ class GFTave {
 		$url = "https://tave.com/app/webservice/create-lead/{$settings["brand"]}"; // https://tave.com/app/webservice/create-lead/whateverthestudioIDis
 		$map = $feed[0]["meta"]["lead_fields"];
 		$convertFunction = function_exists('mb_convert_encoding');
+		
 
 		/* create a data structure to send to Tave */
 		$lead = array();
@@ -647,6 +656,14 @@ class GFTave {
 		$lead["GuestCount"] = self::get_entry_data("GuestCount", $entry, $map);
 		$lead["Brand"] = self::get_entry_data("Brand", $entry, $map);
 		
+		// Additional Fields added in the settings, append them to the end of the current list above
+		foreach (explode(', ', $settings["extra_fields"]) as $key) {
+			$key = trim($key);
+			if (strlen($key)){
+				$lead[$key] = self::get_entry_data($key, $entry, $map);
+			}
+		}		
+				
 		foreach (array_keys($lead) as $k) {
 			if (empty($lead[$k])) {
 				unset($lead[$k]);
@@ -778,7 +795,9 @@ class GFTave {
 
     private static function get_lead_fields(){
         //the "required" key exists only for fields that are required by the Tave API
-		return array(
+        $settings = get_option("gf_tave_settings");
+        $appendFields = array();
+		$leadFields = array(
 			array("name" => "JobType", "label" => "JobType", "required" => "true"), 
 			array("name" => "FirstName", "label" => "FirstName", "required" => "true"), 
 			array("name" => "LastName", "label" =>"LastName", "required" => "true"),
@@ -795,6 +814,15 @@ class GFTave {
 			array("name" => "CeremonyLocation", "label" =>"CeremonyLocation"), 
 			array("name" => "ReceptionLocation", "label" =>"ReceptionLocation")
 		);
+		
+		foreach (explode(', ', $settings["extra_fields"]) as $key => $value) {
+			$value = trim($value);
+			if (strlen($value)){
+				$appendFields[$key] = array("name" => $value, "label" => $value);
+			}
+		};
+		
+		return array_merge($leadFields, $appendFields);
     }
 	
     private static function get_mapped_field_list($variable_name, $selected_field, $fields){
