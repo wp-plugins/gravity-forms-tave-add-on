@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms T&aacute;ve Add-On
 Plugin URI: http://www.rowellphoto.com/gravity-forms-tave/
 Description: Connects your WordPress web site to your T&aacute;ve account for collecting leads using the power of Gravity Forms.
-Version: 2014.12.04
+Version: 2015.03.04
 Author: Ryan Rowell
 Author URI: http://www.rowellphoto.com/
 
@@ -226,6 +226,24 @@ class GFTave {
             </table>
         </form>
 		<div class="hr-divider"></div>
+
+		<div class="postbox-container">
+			<div class="postbox">
+				<div class="inside">
+					<h3 style="padding:5px;">Stuff needed for trouble shooting</h3>
+					<pre><?php echo 'Curl: ', function_exists('curl_version') ? 'Enabled' : 'Disabled'; ?></pre>
+					<pre><?php 
+						if (function_exists('curl_version')) {
+						$curlVersion = curl_version();
+						echo var_export($curlVersion, true);
+						} 
+						?></pre>
+					<pre>
+						<?php echo get_option('gf_taveErrorLog'); ?>
+					</pre>
+				</div>
+			</div>
+		</div>
 
         <form action="" method="post">
             <?php wp_nonce_field("uninstall", "gf_tave_uninstall") ?>
@@ -687,15 +705,30 @@ class GFTave {
 		if ($settings["no_email"] == "checked") {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-Tave-No-Email-Notification: true'));
 		}
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $lead);
+		
+		curl_setopt_array($ch, array(
+		    CURLOPT_URL => $url,
+		    CURLOPT_RETURNTRANSFER => true,
+		    CURLOPT_POST => true,
+		    CURLOPT_POSTFIELDS => $lead,
+		    CURLOPT_SSL_VERIFYHOST => false,
+		    CURLOPT_SSL_VERIFYPEER => false,
+		    CURLOPT_CONNECTTIMEOUT => 10,
+		    CURLOPT_TIMEOUT => 20
+	    ));
 
 		/* get the response from the Tave API */
-		$response = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$response = trim(curl_exec($ch));
+		$curlInfo = curl_getinfo($ch);
+		$curlError = curl_error($ch);
+
+		// put them together into one pretty package
+		$taveErrorLog = "\n=== " . date('r') . " ==============================="
+		. "\n\n-- curlInfo --\n" . var_export($curlInfo, true)
+		. "\n\n-- response --\n" . var_export($response, true)
+		. "\n\n-- CurlError --\n" . var_export($curlError, true);
+		
+		update_option( 'gf_taveErrorLog', $taveErrorLog );
 
 		/* close the connection */
 		curl_close($ch);
