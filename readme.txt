@@ -3,7 +3,7 @@ Contributors: rowellr
 Tags: Gravity Forms, Táve
 Requires at least: 4
 Tested up to: 4
-Stable tag: 2015.03.04
+Stable tag: 2015.03.06
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,10 @@ Visit my [Usage & Installation Instructions](http://www.rowellphoto.com/gravity-
 4. Mapping your fields from the form to Táve.
 
 == Changelog ==
+
+= 2015.03.06 = 
+
+* The forgotten files added back to the plugin.
 
 = 2015.03.04 =
 * Added some debugging code to help me help you when needed. This way it will keep a log of the last connection and you can tell if it went through, or there was an error and why. also good when you come looking for help that you can provide this info.
