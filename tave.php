@@ -203,7 +203,7 @@ class GFTave {
                     <th scope="row"><label for="gf_tave_brand"><?php _e("T&aacute;ve Studio ID", "gravityformstave"); ?>  <?php gform_tooltip("tave_brand") ?></label></th>
                     <td>
                         <input type="text" id="gf_tave_brand" name="gf_tave_brand" value="<?php echo esc_attr($settings["brand"]) ?>" size="50"/>
-						<?php if (strlen($settings["brand"]) != 0) echo "<img src=\"" . self::get_base_url() . "images/tick.png\" />"; ?>
+						<?php if (strlen($settings["brand"]) != 0) echo "<img src=\"" . self::get_base_url() . "/images/tick.png\" />"; ?>
                     </td>
                 </tr>
                 <tr>
